@@ -1,15 +1,14 @@
 use async_graphql::{
-    EmptyMutation, EmptySubscription, FieldResult, GQLMergedObject, Object, QueryBuilder, Schema,
-    SimpleObject, ID,
+    EmptyMutation, EmptySubscription, MergedObject, Object, Request, Schema, SimpleObject, ID,
 };
 
-#[SimpleObject(desc = "A fruit")]
+#[derive(SimpleObject)]
 struct Fruit {
     id: ID,
     name: String,
 }
 
-#[SimpleObject(desc = "A vegetable")]
+#[derive(SimpleObject)]
 struct Vegetable {
     id: ID,
     name: String,
@@ -20,12 +19,12 @@ struct FruitQuery;
 
 #[Object]
 impl FruitQuery {
-    #[entity]
-    async fn get_fruit(&self, id: ID) -> FieldResult<Fruit> {
-        Ok(Fruit {
+    #[graphql(entity)]
+    async fn get_fruit(&self, id: ID) -> Fruit {
+        Fruit {
             id,
             name: "Apple".into(),
-        })
+        }
     }
 }
 
@@ -34,22 +33,23 @@ struct VegetableQuery;
 
 #[Object]
 impl VegetableQuery {
-    #[entity]
-    async fn get_vegetable(&self, id: ID) -> FieldResult<Vegetable> {
-        Ok(Vegetable {
+    #[graphql(entity)]
+    async fn get_vegetable(&self, id: ID) -> Vegetable {
+        Vegetable {
             id,
             name: "Carrot".into(),
-        })
+        }
     }
 }
 
-#[derive(GQLMergedObject, Default)]
+#[derive(MergedObject, Default)]
 struct Query(FruitQuery, VegetableQuery);
 
 #[async_std::main]
 async fn main() {
-    let schema = Schema::build(Query::default(), EmptyMutation, EmptySubscription).finish();
+    let schema = Schema::new(Query::default(), EmptyMutation, EmptySubscription);
     let query = include_str!("./introspection_query.graphql");
-    let result = QueryBuilder::new(query).execute(&schema).await.unwrap();
-    println!("{:#}", result.data);
+    let request = Request::new(query);
+    let response = schema.execute(request).await;
+    println!("{:#}", response.data);
 }

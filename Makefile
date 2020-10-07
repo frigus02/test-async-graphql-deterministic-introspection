@@ -4,5 +4,5 @@ SHELL := bash
 test: target/debug/test-async-graphql-deterministic-introspection
 	diff <($<) <($<)
 
-target/debug/test-async-graphql-deterministic-introspection: src
+target/debug/test-async-graphql-deterministic-introspection: Cargo.* src
 	cargo build
