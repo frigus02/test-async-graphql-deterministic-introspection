@@ -51,5 +51,5 @@ async fn main() {
     let query = include_str!("./introspection_query.graphql");
     let request = Request::new(query);
     let response = schema.execute(request).await;
-    println!("{:#}", response.data);
+    println!("{}", serde_json::to_string_pretty(&response.data).unwrap());
 }

@@ -1,0 +1,11 @@
+{
+  "name": "test-async-graphql-deterministic-introspection",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:frigus02/test-async-graphql-deterministic-introspection.git",
+  "author": "Jan Kuehle <jan.kuehle@red-badger.com>",
+  "license": "MIT",
+  "dependencies": {
+    "graphql": "^15.3.0"
+  }
+}
