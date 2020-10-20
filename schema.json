@@ -132,26 +132,6 @@
       {
         "description": null,
         "enumValues": null,
-        "fields": [],
-        "inputFields": null,
-        "interfaces": [],
-        "kind": "OBJECT",
-        "name": "FruitQuery",
-        "possibleTypes": null
-      },
-      {
-        "description": null,
-        "enumValues": null,
-        "fields": [],
-        "inputFields": null,
-        "interfaces": [],
-        "kind": "OBJECT",
-        "name": "FruitQuery_MergedObjectTail",
-        "possibleTypes": null
-      },
-      {
-        "description": null,
-        "enumValues": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -167,16 +147,6 @@
         "interfaces": null,
         "kind": "SCALAR",
         "name": "Int",
-        "possibleTypes": null
-      },
-      {
-        "description": null,
-        "enumValues": null,
-        "fields": [],
-        "inputFields": null,
-        "interfaces": [],
-        "kind": "OBJECT",
-        "name": "MergedObjectTail",
         "possibleTypes": null
       },
       {
@@ -303,26 +273,6 @@
         "possibleTypes": null
       },
       {
-        "description": null,
-        "enumValues": null,
-        "fields": [],
-        "inputFields": null,
-        "interfaces": [],
-        "kind": "OBJECT",
-        "name": "VegetableQuery",
-        "possibleTypes": null
-      },
-      {
-        "description": null,
-        "enumValues": null,
-        "fields": [],
-        "inputFields": null,
-        "interfaces": [],
-        "kind": "OBJECT",
-        "name": "VegetableQuery_FruitQuery_MergedObjectTail",
-        "possibleTypes": null
-      },
-      {
         "description": "The `_Any` scalar is used to pass representations of entities from external services into the root `_entities` field for execution.",
         "enumValues": null,
         "fields": null,
@@ -343,12 +293,12 @@
         "possibleTypes": [
           {
             "kind": "OBJECT",
-            "name": "Vegetable",
+            "name": "Fruit",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "Fruit",
+            "name": "Vegetable",
             "ofType": null
           }
         ]

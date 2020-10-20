@@ -8,5 +8,5 @@ const introspectionSchema = fs.readFileSync(
   "utf8"
 );
 const schema = buildClientSchema(JSON.parse(introspectionSchema));
-//console.log(printSchema(schema));
+console.log(printSchema(schema));
 console.log(validateSchema(schema));
