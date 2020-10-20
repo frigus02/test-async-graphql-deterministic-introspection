@@ -1,5 +1,6 @@
 use async_graphql::{
-    EmptyMutation, EmptySubscription, MergedObject, Object, Request, Schema, SimpleObject, ID,
+    Context, EmptySubscription, FieldResult, MergedObject, Object, Request, Schema, SimpleObject,
+    ID,
 };
 
 #[derive(SimpleObject)]
@@ -19,12 +20,29 @@ struct FruitQuery;
 
 #[Object]
 impl FruitQuery {
+    async fn fruit(&self, context: &Context<'_>, id: ID) -> FieldResult<Fruit> {
+        Ok(self.get_fruit(context, id).await?)
+    }
+
     #[graphql(entity)]
-    async fn get_fruit(&self, id: ID) -> Fruit {
-        Fruit {
+    async fn get_fruit(&self, _context: &Context<'_>, id: ID) -> FieldResult<Fruit> {
+        Ok(Fruit {
             id,
             name: "Apple".into(),
-        }
+        })
+    }
+}
+
+#[derive(Default)]
+struct FruitMutation;
+
+#[Object]
+impl FruitMutation {
+    async fn eat_fruit(&self, _context: &Context<'_>, id: ID) -> FieldResult<Fruit> {
+        Ok(Fruit {
+            id,
+            name: "Apple".into(),
+        })
     }
 }
 
@@ -33,8 +51,7 @@ struct VegetableQuery;
 
 #[Object]
 impl VegetableQuery {
-    #[graphql(entity)]
-    async fn get_vegetable(&self, id: ID) -> Vegetable {
+    async fn vegetable(&self, _context: &Context<'_>, id: ID) -> Vegetable {
         Vegetable {
             id,
             name: "Carrot".into(),
@@ -45,9 +62,12 @@ impl VegetableQuery {
 #[derive(MergedObject, Default)]
 struct Query(FruitQuery, VegetableQuery);
 
+#[derive(MergedObject, Default)]
+struct Mutation(FruitMutation);
+
 #[async_std::main]
 async fn main() {
-    let schema = Schema::new(Query::default(), EmptyMutation, EmptySubscription);
+    let schema = Schema::new(Query::default(), Mutation::default(), EmptySubscription);
     let query = include_str!("./introspection_query.graphql");
     let request = Request::new(query);
     let response = schema.execute(request).await;
